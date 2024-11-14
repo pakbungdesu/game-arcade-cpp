@@ -1,7 +1,6 @@
 
 #pragma once
 #include <iostream>
-#include <map>
 using namespace std;
 
 
@@ -39,15 +38,11 @@ void calculator(double& n1, double& n2, int& process, double& res) {
     }
 }
 
+
 void play_calculator() {
 
     picCal();
-
-    std::map <int, string> display;
-    display.insert(make_pair(1, " + "));
-    display.insert(make_pair(2, " - "));
-    display.insert(make_pair(3, " * "));
-    display.insert(make_pair(4, " / "));
+    string display[4] = { " + ", " - ", " * ", " / " };
     double num1, num2, result;
     string con = "y";
     int pickProcess;
@@ -60,7 +55,7 @@ void play_calculator() {
         cin >> pickProcess;
 
         calculator(num1, num2, pickProcess, result);
-        cout << num1 << display[pickProcess] << num2 << " = " << result;
+        cout << num1 << display[pickProcess - 1] << num2 << " = " << result;
 
         cout << "\ntype 'y' to continue calculating with " << result << ", type 'n' to exit: \n"; cin >> con;
         num1 = result;
