@@ -1,44 +1,65 @@
 
 #pragma once
 #include <iostream>
-#include <vector>
 using namespace std;
 
 
-vector<int> process(vector<char> letter, string message, int shift, string direction) {
-    vector<int> res;
+struct nodeCs {
+    int before;
+    int after;
+    nodeCs* link;
+};
+
+
+void queueBefore(nodeCs*& first, string input, int len) {
+    nodeCs* q = NULL;
+
+    for (int i = 0; i < len; i++) {
+        nodeCs* p = new nodeCs;
+        p->before = ((int)input[i]) % 97;
+        p->after = 0;
+        p->link = NULL;
+
+        if (first == NULL && q == NULL) {
+            first = p;
+            q = p;
+        }
+        else {
+            q->link = p;
+            q = p;
+        }
+    }
+}
+
+
+void encodeDecode(nodeCs*& first, int shift, string direc) {
     int new_idx;
     shift %= 26;
 
-    for (char ele : message) {
-        for (int i = 0; i < letter.size(); i++) {
-            if (letter[i] == ele) {
-                if (direction == "encode") {
-                    new_idx = (i + shift) % 26;
-
-                }
-                else { // decode
-                    new_idx = (i - shift) % 26;
-
-                    if (new_idx < 0) {
-                        new_idx += 26;
-                    }
-                }
-                res.push_back(new_idx);
-            }
+    for (nodeCs* temp = first; temp != NULL; temp = temp->link) {
+        if (direc == "encode") {
+            new_idx = (temp->before + shift) % 26;
         }
-    }
-    return res;
-}
-
-void reader(vector<char> letter, vector<int> idx, string& output) {
-    for (char ele : idx) {
-        output += letter[ele];
+        else {
+            new_idx = (temp->before - shift) % 26;
+            if (new_idx < 0) { new_idx += 26; }
+        }
+        temp->after = new_idx;
     }
 }
 
-void play_caesar() {
 
+void codeReader(nodeCs* first) {
+    for (nodeCs* temp = first; temp != NULL; temp = temp->link) {
+        int idx = temp->after + 97;
+        char casting = static_cast<char>(idx);
+        cout << casting;
+    }
+    cout << endl;
+}
+
+
+void picCipher() {
     cout << "   .o88b.  .d8b.  d88888b .d8888.  .d8b.  d8888b.  \n"
         "  d8P  Y8 d8' `8b 88'     88'  YP d8' `8b 88  `8D  \n"
         "  8P      88ooo88 88ooooo `8bo.   88ooo88 88oobY'  \n"
@@ -53,28 +74,32 @@ void play_caesar() {
         "  8b         88    88      88   88 88      88`8b   \n"
         "  Y8b  d8   .88.   88      88   88 88.     88 `88. \n"
         "   `Y88P' Y888888P 88      YP   YP Y88888P 88   YD \n";
+}
 
-    vector<char> letter = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
-    while (true) {
+void play_caesar() {
+    picCipher();
+    string next = "yes";
+
+    while (next != "no") {
 
         // declare
-        int shift;
-        string next, direction, message, output = "";
+        nodeCs* first = NULL;
+        int shift, len;
+        string direc, message;
+
         // input
-        cout << "\n\nType 'encode' to encrypt, type 'decode' to decrypt:\n"; cin >> direction;
-        cout << "Type your message:\n"; cin >> message;
-        cout << "Type the shift number:\n"; cin >> shift;
+        cout << "\nType 'encode' to encrypt, type 'decode' to decrypt: "; cin >> direc;
+        cout << "Type your message in lower case: "; cin >> message;
+        cout << "Type the shift number: "; cin >> shift;
+        len = message.length();
 
         // output
-        vector<int> vector_idx = process(letter, message, shift, direction);
-        reader(letter, vector_idx, output);
-        cout << "Here's the encode result: " << output;
+        queueBefore(first, message, len);
+        encodeDecode(first, shift, direc);
+        cout << "Here's the encode result: "; codeReader(first);
 
         // loop
-        cout << "\nType 'yes' if you want to go again. Otherwise type 'no'.\n"; cin >> next;
-        if (next == "no") {
-            break;
-        }
+        cout << "\nType 'yes' if you want to go again. Otherwise type 'no': "; cin >> next;
     }
 }
