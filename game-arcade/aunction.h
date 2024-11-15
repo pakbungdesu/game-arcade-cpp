@@ -4,10 +4,10 @@
 using namespace std;
 
 
-struct node {
+struct nodeAunc {
     string name;
     double bid;
-    node* link;
+    nodeAunc* link;
 };
 
 
@@ -26,12 +26,12 @@ void picAunc() {
 }
 
 
-void Enqueue(node*& first) {
+void Enqueue(nodeAunc*& first) {
 
     string other = "yes";
-    node* q = NULL;
+    nodeAunc* q = NULL;
     while (other == "yes") {
-        node* p = new node;
+        nodeAunc* p = new nodeAunc;
         cout << "\nWhat is your name?: "; cin >> p->name;
         cout << "What is your bit?: $"; cin >> p->bid;
         p->link = NULL;
@@ -49,7 +49,7 @@ void Enqueue(node*& first) {
 }
 
 
-void Process(node* first, string& max_name, double& max_bid) {
+void Process(nodeAunc* first, string& max_name, double& max_bid) {
 
     while (first != NULL) {
         if (first->bid > max_bid) {
@@ -65,7 +65,7 @@ void play_aunction() {
     picAunc();
     string other = "yes", max_name;
     double max_bid = 0.0;
-    node* first = NULL;
+    nodeAunc* first = NULL;
 
     Enqueue(first);
     Process(first, max_name, max_bid);
