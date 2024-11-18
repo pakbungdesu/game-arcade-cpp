@@ -52,12 +52,30 @@ void to_lower(string& sometxt) {
     }
 }
 
+
+int calculate_score(int user1, int user2) {
+    int score[3][3] = { {1, 0, 2}, {2, 1, 0}, {0, 2, 1} };
+    return score[user1][user2];
+}
+
+
+int hand_tonum(string user_hand) {
+    if (user_hand == "rock") {
+        return 0;
+    }
+    else if (user_hand == "paper") {
+        return 1;
+    }
+    else {
+        return 2;
+    }
+}
+
+
 void play_RPS() {
 
     greeting();
 
-    int score[3][3] = { {1, 0, 2}, {2, 1, 0}, {0, 2, 1} };
-    string hands[3] = { "Rock", "Paper", "Scissors" };
     int i = 1, total_user = 0, total_bot = 0;
     int user_num, user_score, bot_score;
     string con, user_hand;
@@ -65,23 +83,13 @@ void play_RPS() {
     cout << "\nDo you want to continue or stop? "; cin >> con;
     to_lower(con);
 
-
     while (con != "stop") {
 
         cout << "\nRound " << i;
         cout << "\nWhat do you choose?: "; cin >> user_hand;
 
         to_lower(user_hand);
-
-        if (user_hand == "rock") {
-            user_num = 0;
-        }
-        else if (user_hand == "paper") {
-            user_num = 1;
-        }
-        else {
-            user_num = 2;
-        }
+        user_num = hand_tonum(user_hand);
 
         int bot_hand = rand() % 3;
         cout << "\nYour hand:\n";
@@ -89,8 +97,8 @@ void play_RPS() {
         cout << "\nBot hand:\n";
         picRPS(bot_hand);
 
-        user_score = score[user_num][bot_hand];
-        bot_score = score[bot_hand][user_num];
+        user_score = calculate_score(user_num, bot_hand);
+        bot_score = calculate_score(bot_hand, user_num);
 
         cout << "\nYour score +" << user_score;
         cout << "\nBot score +" << bot_score;
@@ -99,7 +107,6 @@ void play_RPS() {
         total_bot += bot_score;
         cout << "\nDo you want to continue or stop? "; cin >> con;
         to_lower(con);
-
         i += 1;
     }
 

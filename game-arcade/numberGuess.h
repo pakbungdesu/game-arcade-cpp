@@ -6,17 +6,8 @@
 using namespace std;
 
 
-void play_numberGuess() {
-
-    cout <<
-        "   _   _   _   _   _   _    _   _   _   _   _   _   _   _\n"
-        "  / \\ / \\ / \\ / \\ / \\ / \\  / \\ / \\ / \\ / \\ / \\ / \\ / \\ / \\\n"
-        " ( N | u | m | b | e | r )( G | u | e | s | s | i | n | g )\n"
-        "  \\_/ \\_/ \\_/ \\_/ \\_/ \\_/  \\_/ \\_/ \\_/ \\_/ \\_/ \\_/ \\_/ \\_/";
-
+void Input(int& lives) {
     string level;
-    int lives, guess;
-
     cout << "\n\nI'm thinking of a number between 1 and 100.\n";
     do {
         cout << "Choose a difficulty. Type 'easy' or 'hard'\n";
@@ -24,9 +15,11 @@ void play_numberGuess() {
     } while (level != "easy" && level != "hard");
 
     lives = (level == "easy") ? 10 : 7;
+}
 
-    srand(time(0));
-    int n = rand() % 101;
+
+void Process(int lives, int n) {
+    int guess;
 
     while (lives > 0) {
         cout << "You have " << lives << " attempts remaining to guess the number\n";
@@ -55,4 +48,23 @@ void play_numberGuess() {
         cout << "You've run out of lives! Better luck next time.\n";
     }
     cout << "The answer was " << n;
+}
+
+void play_numberGuess() {
+
+    cout <<
+        "   _   _   _   _   _   _    _   _   _   _   _   _   _   _\n"
+        "  / \\ / \\ / \\ / \\ / \\ / \\  / \\ / \\ / \\ / \\ / \\ / \\ / \\ / \\\n"
+        " ( N | u | m | b | e | r )( G | u | e | s | s | i | n | g )\n"
+        "  \\_/ \\_/ \\_/ \\_/ \\_/ \\_/  \\_/ \\_/ \\_/ \\_/ \\_/ \\_/ \\_/ \\_/";
+
+
+    int lives, guess;
+    Input(lives);
+
+    // random number
+    srand(time(0));
+    int n = rand() % 101;
+
+    Process(lives, n);
 }
