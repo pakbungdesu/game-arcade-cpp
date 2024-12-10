@@ -1,8 +1,9 @@
 
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <random>
-#include "data.h"
+#define infile "words.txt"
 using namespace std;
 
 
@@ -12,6 +13,29 @@ struct nodeHang {
     nodeHang* link;
 };
 
+
+string genWord(int idx) {
+    int i = 1;
+    string res = "";
+    ifstream ids;
+
+    ids.open(infile);
+    if (ids.fail()) {
+        cerr << "Can't open " << infile << endl;
+        return res;
+    }
+    
+    while (!ids.eof()) {
+        if (i == idx) {
+            ids >> res;
+            break;
+        }
+        ids >> res;
+        i++;
+    }
+    ids.close();
+    return res;
+}
 
 void picHang(int index) {
     string all_pics[7] = {
@@ -149,10 +173,13 @@ void play_hangman(){
     // random device
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> dis(0, 1022);
+    uniform_int_distribution<> dis(1, 854);
     int idx = dis(gen);
 
-    string myword = words(idx);
+    string myword = genWord(idx);
+    if (myword == "") {
+        return;
+    }
     int len = myword.length();
     nodeHang* first = NULL;
 

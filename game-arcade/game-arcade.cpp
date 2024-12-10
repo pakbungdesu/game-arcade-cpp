@@ -1,12 +1,12 @@
 
 #include <iostream>
-#include "rockPaperScis.h"
+#include "rppsciss.h"
 #include "hangman.h"
 #include "blackjack.h"
 #include "aunction.h"
 #include "caesar.h"
 #include "calculator.h"
-#include "numberGuess.h"
+#include "numguess.h"
 using namespace std;
 
 int main()
