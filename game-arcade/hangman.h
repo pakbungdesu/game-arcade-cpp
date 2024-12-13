@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <random>
-#define infile "words.txt"
+#define infile "/Users/User/source/repos/game-arcade-cpp/game-arcade/words.txt"
 using namespace std;
 
 
@@ -173,7 +173,7 @@ void play_hangman(){
     // random device
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> dis(1, 854);
+    uniform_int_distribution<> dis(1, 1022);
     int idx = dis(gen);
 
     string myword = genWord(idx);
